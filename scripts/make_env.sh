@@ -1,0 +1,1 @@
+export ECR_USERNAME="catniz"

@@ -1,35 +1,15 @@
 #!/bin/bash
 set -e
 
-source "$(dirname "$0")/utils.sh"
-
-# if no golang file is staged, skip compile check
-if [[ -z $(git diff --cached --name-only | grep -E '(\.go$|go\.mod|go\.sum)') ]]; then
-  echo "No golang file staged. Skip compile check."
-  exit 0
-fi
+root_dir="$(dirname "$0")/.."
+source "$root_dir/scripts/common.sh"
 
 # check if all servers in cmd folder can be compiled without error
-for d in "$ROOT_PATH"/cmd/*; do
+for d in "$root_dir"/cmd/*; do
   if [ -d "$d" ] && [ -f "$d/main.go" ]; then
-    echo "Building '${d##*/}'"
+    target="${d##*/}"
+    echo "Building '$target'"
 
-    if is_go_installed && [ "$GO_MOD_VERSION" = "$GO_INSTALLED_VERSION" ]; then
-      # if go version is compatible, build directly
-      go build -o "$d/${d##*/}" "$d"
-
-    elif is_docker_installed; then
-      if running_in_gitbash; then
-        # if running in Windows Git Bash (MINGW), cd to wsl directory to mount volume correctly
-        cd "$ROOT_PATH"
-        MSYS2_ARG_CONV_EXCL='*' docker run --rm -v .:/app -w /app/cmd/"${d##*/}" golang:"${GO_MOD_VERSION}"-alpine go build
-      else
-        # build with docker in normal Windows environment
-        docker run --rm -v "$ROOT_PATH":/app -w /app/cmd/"${d##*/}" golang:"${GO_MOD_VERSION}"-alpine go build
-      fi
-    else
-      echo "Please install the appropriate version of go or docker, or check the path."
-      exit 1
-    fi
+    go_cmd build -o "./cmd/$target/$target" "./cmd/$target"
   fi
 done

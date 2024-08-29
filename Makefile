@@ -1,8 +1,8 @@
+include scripts/make_env.sh
 
 build:
-	@dockerfile=$$([ -f cmd/$(TARGET)/Dockerfile ] && echo cmd/$(TARGET)/Dockerfile || echo build/common.Dockerfile); \
-	echo "Building $(TARGET) image with $$dockerfile"; \
-	docker build -t $(TARGET):latest -f $$dockerfile . --build-arg TARGET=$(TARGET)
+	chmod +x scripts/build.sh
+	scripts/build.sh $(TARGET) $(TAG)
 
 register-githooks:
 # if you want to ignore the hooks, use git commit --no-verify

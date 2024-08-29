@@ -12,8 +12,8 @@ make register-githooks
 ## Commands
 ```bash
 # run
-go run cmd/nuts/main.go
+go run cmd/bullish/main.go
 
 # build
-make build TARGET=nuts
+make build TARGET=bullish TAG=latest
 ```
