@@ -1,0 +1,4 @@
+# fixme:: secret 파일 분리
+infra:
+  rdb_username: admin
+  rdb_password: admin1234
