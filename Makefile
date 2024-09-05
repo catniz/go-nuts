@@ -14,4 +14,20 @@ register-githooks:
 template-k8s-yaml:
 	@bash scripts/template_k8s_yaml.sh $(ENV) $(TARGET)
 
+# ex) make ent-new NAME=SystemConfig SCHEMA=bullish
+# ex) make ent-new NAME=User,SystemConfig SCHEMA=bullish
+ent-new:
+	go run ./pkg/ent/entc/new/main.go \
+		-target ./pkg/ent/schema \
+		-template ./pkg/ent/entc/new/entnew.tmpl \
+		-tables $(NAME) \
+		-schema $(SCHEMA)
+
+# ex) make ent-generate
+ent-generate:
+	go run ./pkg/ent/entc/gen/main.go \
+		-target ./pkg/ent/schema \
+		-templatedir ./pkg/ent/entc/gen/ \
+		-feature sql/upsert,sql/execquery,sql/modifier
+
 .PHONY: build

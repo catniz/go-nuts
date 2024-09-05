@@ -1,0 +1,13 @@
+{{/* The line below tells Intellij/GoLand to enable the autocompletion based on the *gen.Type type. */}}
+{{/* gotype: entgo.io/ent/entc/gen.Type */}}
+
+{{ define "dialect/sql/meta/constants/additional" }}
+    // Schema holds the table schema of the {{ lower .Name }} in the database.
+    Schema = {{ quote .TableSchema }}
+{{ end }}
+
+{{ define "meta/additional/selecttable" }}
+func SelectTable() *sql.SelectTable {
+    return sql.Table(Table).Schema(Schema)
+}
+{{ end }}

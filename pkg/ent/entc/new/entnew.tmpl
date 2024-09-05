@@ -1,0 +1,41 @@
+{{- /* 커스텀 함수는 여기를 참고 https://github.com/ent/ent/blob/master/entc/gen/func.go */ -}}
+
+package schema
+
+import (
+    "entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+    "entgo.io/ent/schema"
+)
+
+// {{ .Table }} holds the schema definition for the {{ .Table }} entity.
+type {{ .Table }} struct {
+    ent.Schema
+}
+
+// Fields of the {{ .Table }}.
+func ({{ .Table }}) Fields() []ent.Field {
+    return []ent.Field{
+        // Fields go here.
+    }
+}
+
+// Edges of the {{ .Table }}.
+func ({{ .Table }}) Edges() []ent.Edge {
+	return []ent.Edge{
+        // Edges go here.
+	}
+}
+
+// Mixin of the {{ .Table }}.
+func ({{ .Table }}) Mixin() []ent.Mixin {
+    return []ent.Mixin{
+        IdMixin{},
+        TimeMixin{},
+    }
+}
+
+// Annotations of the {{ .Table }}.
+func ({{ .Table }}) Annotations() []schema.Annotation {
+	return []schema.Annotation{entsql.Annotation{Table: "{{ .Table | snake }}", Schema: "{{ .Schema }}"}}
+}
